@@ -14,7 +14,7 @@ use std::marker::Send;
 pub struct Server<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
     where Req: Send, ReqErr: Send
 {
-    receiver: &'a mut dyn Receiver<Req, ReqErr>,
+    receiver: Arc<Mutex<&'a mut dyn Receiver<Req, ReqErr>>>,
     handler: Arc<Mutex<&'b mut dyn Handler<Req, Res, HanErr>>>,
     responder: Arc<Mutex<&'c mut dyn Responder<Res, ResErr>>>,
     error_checker: Arc<Mutex<&'d mut dyn ErrorChecker<ReqErr, HanErr, ResErr>>>
@@ -30,6 +30,7 @@ impl<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
         responder: &'c mut dyn Responder<Res, ResErr>,
         error_checker: &'d mut dyn ErrorChecker<ReqErr, HanErr, ResErr>
     ) -> Self {
+        let receiver = Arc::new(Mutex::new(receiver));
         let handler = Arc::new(Mutex::new(handler));
         let responder = Arc::new(Mutex::new(responder));
         let error_checker = Arc::new(Mutex::new(error_checker));
@@ -45,7 +46,7 @@ impl<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
     pub fn run(&mut self) {
         std::thread::scope(|s| {
             loop {
-                let request = self.receiver.next_request();
+                let request = self.receiver.lock().unwrap().next_request();
 
                 let handler = self.handler.clone();
                 let responder = self.responder.clone();

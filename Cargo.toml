@@ -3,7 +3,7 @@ name = "fp_server"
 version = "0.1.0"
 edition = "2021"
 
-license-file = "GPL-3.0"
+license = "GPL-3.0"
 description = "An abstract server representation"
 homepage = "https://developergy.github.io/fp_server"
 documentation = "https://docs.rs/fp_server"

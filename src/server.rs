@@ -59,7 +59,7 @@ impl<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
                             error_checker.lock()
                                 .unwrap()
                                 .handle_receiver_error(e);
-                            panic!();
+                            return;
                         }
                     };
 
@@ -73,7 +73,7 @@ impl<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
                             error_checker.lock()
                                 .unwrap()
                                 .handle_handler_error(e);
-                            panic!();
+                            return;
                         }
                     };
 
@@ -87,7 +87,7 @@ impl<'a, 'b, 'c, 'd, Req, ReqErr, HanErr, Res, ResErr>
                             error_checker.lock()
                                 .unwrap()
                                 .handle_responder_error(e);
-                            panic!();
+                            return;
                         }
                     }
                 });

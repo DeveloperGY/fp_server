@@ -53,6 +53,10 @@ impl RequestParser {
         let mut has_valid_body = false;
         let mut body_index = 0;
 
+        if bytes.len() < 4 {
+            return Err("Invalid Request: Request not long enough!".into())
+        }
+
         for i in 0..bytes.len()-3 {
             let byte_matches = [
                 bytes[i]   == BODY_DELIMITER[0],

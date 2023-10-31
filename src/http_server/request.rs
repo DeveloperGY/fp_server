@@ -1,3 +1,6 @@
+/**
+ * HTTP Request Methods
+ */
 #[allow(unused)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum RequestMethod {
@@ -12,6 +15,9 @@ pub enum RequestMethod {
     Patch
 }
 
+/**
+ * An HTTP Request
+ */
 #[allow(unused)]
 #[derive(Debug, Clone)]
 pub struct Request {
@@ -22,6 +28,9 @@ pub struct Request {
 }
 
 impl Request {
+    /**
+     * Creates an HTTP Request
+     */
     pub fn new(method: RequestMethod, uri: &str, version: &str, body: &[u8]) -> Self {
         Self {
             method,
@@ -32,6 +41,9 @@ impl Request {
     }
 }
 
+/**
+ * Parses an HTTP Request from bytes
+ */
 pub struct RequestParser;
 
 impl RequestParser {

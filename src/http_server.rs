@@ -13,12 +13,19 @@ pub use request::{Request, RequestMethod};
 pub use response:: *;
 use request::RequestParser;
 
+/**
+ * An HTTP Server
+ * Currently only works for HTTP 1.1
+ */
 pub struct HTTPServer {
     listener: TcpListener,
     handlers: HashMap<RequestMethod, Option<fn(Request) -> Response>>
 }
 
 impl HTTPServer {
+    /**
+     * Creates an HTTP Server
+     */
     pub fn new(addr: impl ToSocketAddrs) -> Result<Self, String> {
         let listener = match TcpListener::bind(addr) {
             Ok(listener) => listener,
@@ -45,10 +52,16 @@ impl HTTPServer {
         Ok(server)
     }
 
+    /**
+     * Sets the handler for the given HTTP Request method
+     */
     pub fn handle(&mut self, method: RequestMethod, handler: Option<fn(Request) -> Response>) {
         self.handlers.insert(method, handler);
     }
 
+    /**
+     * Starts the HTTP server
+     */
     pub fn start(&self) {
         std::thread::scope(|s| {
             for connection in self.listener.incoming() {
@@ -90,6 +103,9 @@ impl HTTPServer {
         
     }
 
+    /**
+     * Recieves a request
+     */
     fn receive(&self, stream: &mut TcpStream) -> Result<Vec<u8>, String> {
         const REQUEST_BUFFER_SIZE: usize = 1024;
 
@@ -110,6 +126,9 @@ impl HTTPServer {
         Ok(request)
     }
 
+    /**
+     * Parses a request
+     */
     fn parse(&self, request: &Vec<u8>) -> Result<Request, String>{
         let parser = RequestParser;
 
@@ -120,6 +139,7 @@ impl HTTPServer {
     
         Ok(request)
     }
+
 
     fn validate(&self, request: &Request) -> Result<(), String> {
         match request.version.as_str() {

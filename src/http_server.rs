@@ -71,7 +71,8 @@ impl HTTPServer {
                             Ok(bytes) => bytes,
                             Err(msg) => {
                                 stream.write_all(b"HTTP/1.1 400 Bad Request\r\n\r\n").unwrap();
-                                panic!("{}", msg);
+                                println!("{}", msg);
+                                return;
                             }
                         };
 
@@ -79,13 +80,15 @@ impl HTTPServer {
                             Ok(request) => request,
                             Err(msg) => {
                                 stream.write_all(b"HTTP/1.1 400 Bad Request\r\n\r\n").unwrap();
-                                panic!("{}", msg);
+                                println!("{}", msg);
+                                return;
                             }
                         };
 
                         if let Err(msg) = self.validate(&request) {
                             stream.write_all(b"HTTP/1.1 400 Bad Request\r\n\r\n").unwrap();
-                            panic!("{}", msg);
+                            println!("{}", msg);
+                            return;
                         }
         
                         if let Some(Some(handler)) = self.handlers.get(&request.method) {

@@ -90,6 +90,7 @@ impl HTTPServer {
     }
 }
 
+#[derive(Debug)]
 pub enum HTTPServerError {
     AddressBindFailure
 }

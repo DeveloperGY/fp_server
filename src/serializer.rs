@@ -5,7 +5,11 @@ pub struct HTTPResponseSerializer;
 impl HTTPResponseSerializer {
     pub fn new() -> Self {Self}
 
-    pub fn serialize(&self, response: &HTTPResponse) -> Vec<u8> {
+    pub fn serialize(&self, mut response: HTTPResponse) -> Vec<u8> {
+        if !response.has_header("Content-Length") {
+            response.add_header("Content-Length", response.get_body().len().to_string().as_str());
+        }
+
         let mut str = format!("HTTP/1.1 {} {}\r\n", response.get_code(), response.get_msg());
         
         response.get_headers().iter().for_each(|(key, value)| {

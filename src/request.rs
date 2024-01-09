@@ -13,6 +13,7 @@ pub enum HTTPMethod {
     TRACE
 }
 
+#[derive(Debug, Clone)]
 pub struct HTTPRequest {
     method: HTTPMethod,
     uri: String,

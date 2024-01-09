@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Debug, Clone)]
 pub struct HTTPResponse {
     msg: String,
     code: u32,
@@ -33,6 +34,10 @@ impl HTTPResponse {
 
     pub fn get_headers(&self) -> Vec<(String, String)> {
         self.headers.iter().map(|(key, value)| {((*key).clone(), (*value).clone())}).collect::<Vec<_>>()
+    }
+
+    pub fn has_header(&self, key: &str) -> bool {
+        self.headers.contains_key(key)
     }
 
     pub fn get_msg(&self) -> String {

@@ -85,7 +85,7 @@ impl HTTPServer {
             println!("Invalid Request Method!");
             HTTPResponse::new("Invalid Request Method!", 400, &[])
         };
-        let bytes = serializer.serialize(&response);
+        let bytes = serializer.serialize(response);
         stream.write(&bytes).ok().map(|_| {})
     }
 }

@@ -69,6 +69,6 @@ impl HTTPRequestParser {
         let mut request = builder.with_body(Some(&body)).build(method, uri);
         queries.iter().for_each(|(key, value)| {request.add_query(key, value)});
         headers.iter().for_each(|(key, value)| {request.add_header(key, value)});
-        todo!()
+        Some(request)
     }
 }

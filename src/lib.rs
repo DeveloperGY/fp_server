@@ -23,9 +23,11 @@ pub struct HTTPServer {
 }
 
 impl HTTPServer {
-    pub fn new(
-        address: &impl std::net::ToSocketAddrs
-    ) -> Result<Self, HTTPServerError> {
+    pub fn new<A>(
+        address: A
+    ) -> Result<Self, HTTPServerError>
+        where A: std::net::ToSocketAddrs
+    {
         let listener = TcpListener::bind(address)
             .map_err(|_| {HTTPServerError::AddressBindFailure})?;    
 

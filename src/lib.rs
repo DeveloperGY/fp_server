@@ -6,9 +6,6 @@ mod receiver;
 mod parser;
 mod serializer;
 
-use request::*;
-use response::HTTPResponse;
-use handler::HTTPRequestHandler;
 use receiver::Receiver;
 use parser::HTTPRequestParser;
 use serializer::HTTPResponseSerializer;
@@ -17,6 +14,9 @@ use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 use std::collections::HashMap;
 
+pub use request::*;
+pub use response::HTTPResponse;
+pub use handler::HTTPRequestHandler;
 pub struct HTTPServer {
     listener: TcpListener,
     handlers: HashMap<HTTPMethod, Option<Box<dyn HTTPRequestHandler>>>
